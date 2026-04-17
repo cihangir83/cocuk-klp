@@ -32,10 +32,10 @@ jobs:
             echo ">>> Building $game..."
             if [ -d "$game" ]; then
               cd "$game"
-              # Install dependencies if lockfile doesn't exist or it's first run
-              npm install --prefer-offline --no-audit
-              # Build with relative base
-              npm run build -- --base ./
+              # Use legacy-peer-deps to ignore version conflicts (e.g. React 18 vs 19)
+              npm install --legacy-peer-deps --no-audit
+              # Build (base path is already in most package.json scripts)
+              npm run build
               # Move to ana-sayfa public
               mkdir -p ../ana-sayfa/public/$game
               cp -r dist/* ../ana-sayfa/public/$game/
@@ -46,7 +46,7 @@ jobs:
       - name: Build Main Portal 🚀
         run: |
           cd ana-sayfa
-          npm install --prefer-offline --no-audit
+          npm install --legacy-peer-deps --no-audit
           npm run build
           cd ..
 
