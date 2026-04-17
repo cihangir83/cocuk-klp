@@ -1,0 +1,57 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Build Games 🎮
+        run: |
+          mkdir -p ana-sayfa/public
+          games=("bio-triz-arena" "biyoatlas" "celiski-makinesi" "eko-cizgi-roman" "eko-kacis" "eko-sorusturma" "evrim-lab" "fono-komitesi")
+          for game in "${games[@]}"; do
+            echo ">>> Building $game..."
+            if [ -d "$game" ]; then
+              cd "$game"
+              # Install dependencies if lockfile doesn't exist or it's first run
+              npm install --prefer-offline --no-audit
+              # Build with relative base
+              npm run build -- --base ./
+              # Move to ana-sayfa public
+              mkdir -p ../ana-sayfa/public/$game
+              cp -r dist/* ../ana-sayfa/public/$game/
+              cd ..
+            fi
+          done
+
+      - name: Build Main Portal 🚀
+        run: |
+          cd ana-sayfa
+          npm install --prefer-offline --no-audit
+          npm run build
+          cd ..
+
+      - name: Deploy to GitHub Pages 🌎
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ana-sayfa/dist
+          branch: gh-pages

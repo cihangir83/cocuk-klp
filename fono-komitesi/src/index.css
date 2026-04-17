@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-room: #050810;
+  --color-bg-table: #0A0F1E;
+  --color-bg-glass: rgba(15, 25, 50, 0.8);
+  --color-bg-card: #0D1628;
+  --color-accent-blue: #00A8FF;
+  --color-accent-gold: #FFB300;
+  --color-accent-cyan: #00FFF5;
+  --color-accent-purple: #7C3AED;
+  --color-danger: #FF3D57;
+  --color-success: #00D68F;
+  --color-holo-line: rgba(0, 168, 255, 0.3);
+  --color-holo-glow: rgba(0, 255, 245, 0.15);
+  --color-glass-border: rgba(0, 168, 255, 0.2);
+
+  --font-display: 'Rajdhani', sans-serif;
+  --font-data: 'Share Tech Mono', monospace;
+  --font-project: 'Exo 2', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-decision: 'Cinzel', serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Exo+2:wght@400;600;700&family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-bg-room);
+  color: white;
+  font-family: var(--font-body);
+  overflow: hidden; /* Avoid scrolling in main app to feel like an app */
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.glass-panel {
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  border-radius: 0.75rem;
+}
+
+.holo-text {
+  text-shadow: 0 0 10px var(--color-holo-glow);
+}

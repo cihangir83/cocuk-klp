@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&family=Comic+Neue:wght@400;700&family=Inter:wght@400;500;600;700&family=Permanent+Marker&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-title: 'Bangers', cursive;
+  --font-dialog: 'Comic Neue', sans-serif;
+  --font-sfx: 'Bebas Neue', sans-serif;
+  --font-caption: 'Permanent Marker', cursive;
+  --font-ui: 'Inter', sans-serif;
+
+  --color-studio: #1A1208;
+  --color-desk: #2C1F0E;
+  --color-paper: #FFF8E7;
+  --color-panel-filled: #FFFDF5;
+  --color-ink-black: #0D0D0D;
+  --color-ink-line: #1A1A1A;
+  --color-accent-yellow: #FFE135;
+  --color-accent-red: #E84545;
+  --color-accent-blue: #3498DB;
+  --color-accent-green: #27AE60;
+  --color-wood-light: #8B6914;
+  --color-wood-dark: #5C4409;
+  
+  --color-panel-action: #FFE135;
+  --color-panel-emotion: #FFD4E8;
+  --color-panel-nature: #D4EDDA;
+  --color-panel-crisis: #FFD4D4;
+  --color-panel-solution: #D4F0FF;
+}
+
+:root {
+  --bg-studio: #1A1208;
+  --bg-desk: #2C1F0E;
+  --bg-paper: #FFF8E7;
+  --bg-panel-filled: #FFFDF5;
+  --ink-black: #0D0D0D;
+  --ink-line: #1A1A1A;
+  --wood-light: #8B6914;
+  --wood-dark: #5C4409;
+  --halftone: rgba(0,0,0,0.08);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-studio);
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Halftone Pattern Effect */
+.halftone-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--halftone) 2px, transparent 2px);
+  background-size: 10px 10px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Custom Scrollbar for Studio */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-studio);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--wood-light);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--wood-dark);
+}
+
+/* Comic Panel Border - Handdrawn effect */
+.comic-border-handdrawn {
+  border: 4px solid var(--ink-line);
+  border-radius: 2px 255px 3px 25px / 255px 5px 225px 3px;
+}
+
+/* Pulse animation for the + icon */
+@keyframes softPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+.animate-soft-pulse {
+  animation: softPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Breathing animation for characters */
+@keyframes breathing {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scaleX(1.02) scaleY(0.98); }
+}
+.animate-breathing {
+  animation: breathing 4s ease-in-out infinite;
+}

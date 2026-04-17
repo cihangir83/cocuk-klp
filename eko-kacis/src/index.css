@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@theme {
+  --color-timer-green: #27AE60;
+  --color-timer-yellow: #F39C12;
+  --color-timer-red: #E84545;
+  --color-timer-critical: #FF0000;
+  --color-hint-gold: #F5A623;
+  --color-correct: #27AE60;
+  --color-wrong: #E84545;
+  --color-locked: #555555;
+  --color-unlocked: #F5A623;
+
+  --color-oda1-bg: #040E1A;
+  --color-oda1-water: #0A2A4A;
+  --color-oda1-accent: #0077BE;
+  --color-oda1-danger: #FF4500;
+  --color-oda1-glow: rgba(0,119,190,0.3);
+  --color-oda1-particle: rgba(100,180,255,0.6);
+
+  --color-oda2-bg: #0D0500;
+  --color-oda2-fire: #FF4500;
+  --color-oda2-ember: #FF8C00;
+  --color-oda2-smoke: #2C2C2C;
+  --color-oda2-accent: #FF6B35;
+  --color-oda2-glow: rgba(255,69,0,0.4);
+  --color-oda2-particle: rgba(255,100,30,0.5);
+
+  --color-oda3-bg: #0A0A08;
+  --color-oda3-metal: #1C1C1A;
+  --color-oda3-toxic: #7FFF00;
+  --color-oda3-acid: #ADFF2F;
+  --color-oda3-rust: #8B4513;
+  --color-oda3-glow: rgba(127,255,0,0.25);
+  --color-oda3-particle: rgba(150,255,50,0.4);
+
+  --font-timer: 'Orbitron', sans-serif;
+  --font-puzzle: 'Share Tech Mono', monospace;
+  --font-hint: 'Courier Prime', monospace;
+  --font-narrative: 'Special Elite', serif;
+  --font-ui: 'Inter', sans-serif;
+}
+
+:root {
+  --timer-green: #27AE60;
+  --timer-yellow: #F39C12;
+  --timer-red: #E84545;
+  --timer-critical: #FF0000;
+  --hint-gold: #F5A623;
+  --correct: #27AE60;
+  --wrong: #E84545;
+  --locked: #555555;
+  --unlocked: #F5A623;
+
+  --oda1-bg: #040E1A;
+  --oda1-water: #0A2A4A;
+  --oda1-accent: #0077BE;
+  --oda1-danger: #FF4500;
+  --oda1-glow: rgba(0,119,190,0.3);
+  --oda1-particle: rgba(100,180,255,0.6);
+
+  --oda2-bg: #0D0500;
+  --oda2-fire: #FF4500;
+  --oda2-ember: #FF8C00;
+  --oda2-smoke: #2C2C2C;
+  --oda2-accent: #FF6B35;
+  --oda2-glow: rgba(255,69,0,0.4);
+  --oda2-particle: rgba(255,100,30,0.5);
+
+  --oda3-bg: #0A0A08;
+  --oda3-metal: #1C1C1A;
+  --oda3-toxic: #7FFF00;
+  --oda3-acid: #ADFF2F;
+  --oda3-rust: #8B4513;
+  --oda3-glow: rgba(127,255,0,0.25);
+  --oda3-particle: rgba(150,255,50,0.4);
+
+  font-family: 'Inter', sans-serif;
+  color: white;
+  background-color: black;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Custom Scrollbar for inner components */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* CRT Scanline effect for monitors */
+.scanlines {
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
