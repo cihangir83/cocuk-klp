@@ -245,7 +245,8 @@ function App() {
   const handleWarpComplete = useCallback(() => {
     if (launchingGame) {
       // Navigate to game
-      window.location.href = launchingGame.path;
+      const baseUrl = import.meta.env.BASE_URL || '/';
+      window.location.href = baseUrl + launchingGame.path;
     }
   }, [launchingGame]);
 

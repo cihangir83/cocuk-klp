@@ -8,6 +8,7 @@ import Workbench from './components/screens/Workbench';
 import BioReveal from './components/screens/BioReveal';
 import Notebook from './components/screens/Notebook';
 import TeacherPanel from './components/screens/TeacherPanel';
+import SnowballArena from './components/screens/SnowballArena';
 
 export default function GameRouter() {
   const { state } = useGame();
@@ -22,6 +23,7 @@ export default function GameRouter() {
       case 'bioReveal': return <BioReveal key="bioReveal" />;
       case 'notebook': return <Notebook key="notebook" />;
       case 'teacherPanel': return <TeacherPanel key="teacherPanel" />;
+      case 'arena': return <SnowballArena key="arena" />;
       default: return <OpeningCinematic key="default" />;
     }
   };

@@ -18,7 +18,7 @@ const machines = [
       detail: "Tüyün iç yapısı gözenekli — bu sayede kuş hem hafif kalır hem de uçuş sırasında devasa aerodinamik kuvvetlere dayanır.",
       trizConnection: "Gözenekli iç yapı ağırlığı minimize eder. Dış kabuk bükülme direncini maksimize eder."
     },
-    unlocks: ["machine_002", "tool_boyut_degistirme"]
+    unlocks: ["machine_002", "tool_aerodinamik_form"]
   },
   {
     id: "machine_002",
@@ -39,7 +39,7 @@ const machines = [
       detail: "Şahinin dalış pozisyonunda vücudu damla formuna bürünür. Bu form hava direncini %90 azaltır.",
       trizConnection: "Doğanın aerodinamik formu, enerjiyi minimumda tutarken hızı maksimuma çıkarır."
     },
-    unlocks: ["machine_003", "tool_ters_cevir"]
+    unlocks: ["machine_003", "tool_renk_degisimi"]
   },
   {
     id: "machine_003",
@@ -60,7 +60,7 @@ const machines = [
       detail: "Ateş böceklerinin biyolüminesans sistemi, enerjinin tamamını ışığa çevirir. Bir akkor lamba %5 verimli iken, ateş böceği %98 verimlidir.",
       trizConnection: "Kimyasal enerjiyi doğrudan ışığa çevirmek, ısı ara adımını ortadan kaldırır."
     },
-    unlocks: ["machine_004"]
+    unlocks: ["machine_004", "tool_kuru_yapisma"]
   },
   {
     id: "machine_004",
@@ -81,7 +81,7 @@ const machines = [
       detail: "Vantuz yüzeyinde minik kanallar vakum oluşturur. Kimyasal yapıştırıcı yok — sadece fiziksel basınç farkı. Bu yüzden kalıntı bırakmaz.",
       trizConnection: "Kuru yapışma prensibi: kimyasal bağ yerine fiziksel kuvvet kullanarak yapışma ve izsiz çözülme sağlanır."
     },
-    unlocks: ["machine_005", "tool_ic_ice_gecirme"]
+    unlocks: ["machine_005", "tool_ters_cevir"]
   },
   {
     id: "machine_005",
@@ -102,7 +102,7 @@ const machines = [
       detail: "Ekolokasyon: yarasa ultrasonik ses dalgaları yayar, yansımayı analiz ederek 3 boyutlu harita oluşturur. Işığa ihtiyaç duymaz.",
       trizConnection: "Algılama biçimini tersine çevirmek: görmek yerine duymak. Farklı bir fiziksel prensip aynı sonuca ulaştırır."
     },
-    unlocks: ["machine_006", "tool_esnek_kabuk"]
+    unlocks: ["machine_006", "tool_bosaltma"]
   },
   {
     id: "machine_006",
@@ -123,7 +123,7 @@ const machines = [
       detail: "Sırtındaki mikro tümsekler hidrofil (su çeken), aralarındaki oluklar hidrofob (su iten). Sis taneleri tümseklerde birikir, oluklardan ağzına akar.",
       trizConnection: "Yüzey yapısını değiştirerek havadaki nemi yakalama — su kaynağı yerine atmosferi kullanma."
     },
-    unlocks: ["machine_007"]
+    unlocks: ["machine_007", "tool_ic_ice_gecirme"]
   },
   {
     id: "machine_007",
@@ -165,7 +165,7 @@ const machines = [
       detail: "Karıncanın kas lifleri vücut ağırlığına oranla devasa kuvvet üretir. Ayrıca dış iskelet yapısı, kuvveti tüm gövdeye dağıtır.",
       trizConnection: "Ön gerilme prensibi: yapıyı önceden gerilim altında tutarak yük kapasitesini boyuttan bağımsız hale getirmek."
     },
-    unlocks: ["machine_009"]
+    unlocks: ["machine_009", "tool_esnek_kabuk"]
   },
   {
     id: "machine_009",
@@ -207,7 +207,7 @@ const machines = [
       detail: "Termitler yuva duvarlarında bacalar ve kanallar inşa eder. Sıcak hava yükselip çıkar, serin hava yeraltından çekilir — otomatik döngü.",
       trizConnection: "Periyodik eylem: doğal konveksiyon döngüsü ile sürekli soğutma — dış enerji kaynağına gerek yok."
     },
-    unlocks: ["machine_011"]
+    unlocks: ["machine_011", "tool_homojenlik"]
   },
   {
     id: "machine_011",

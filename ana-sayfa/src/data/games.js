@@ -10,7 +10,8 @@ export const GAMES = [
     gradient: 'linear-gradient(135deg, #065F46 0%, #10B981 50%, #34D399 100%)',
     bgPattern: 'nature',
     emoji: '🌍',
-    path: '/biyoatlas/index.html',
+    image: 'card-biyoatlas.png',
+    path: 'biyoatlas/index.html',
     tags: ['Biyomimikri', 'Ekosistem', 'Keşif'],
   },
   {
@@ -24,7 +25,8 @@ export const GAMES = [
     gradient: 'linear-gradient(135deg, #030408 0%, #0D1B2A 50%, #1B2A4A 100%)',
     bgPattern: 'cells',
     emoji: '🧬',
-    path: '/evrim-lab/index.html',
+    image: 'card-evrim-lab.png',
+    path: 'evrim-lab/index.html',
     tags: ['Evrim', 'Laboratuvar', 'DNA'],
   },
   {
@@ -38,7 +40,8 @@ export const GAMES = [
     gradient: 'linear-gradient(135deg, #1A0F00 0%, #3D2200 50%, #6B3A00 100%)',
     bgPattern: 'gears',
     emoji: '⚙️',
-    path: '/celiski-makinesi/index.html',
+    image: 'card-celiski-makinesi.png',
+    path: 'celiski-makinesi/index.html',
     tags: ['TRIZ', 'Mühendislik', 'Çelişki'],
   },
   {
@@ -52,7 +55,8 @@ export const GAMES = [
     gradient: 'linear-gradient(135deg, #0D0D0D 0%, #1A1A2E 50%, #2D1B00 100%)',
     bgPattern: 'noir',
     emoji: '🔍',
-    path: '/eko-sorusturma/index.html',
+    image: 'card-eko-sorusturma.png',
+    path: 'eko-sorusturma/index.html',
     tags: ['Dedektif', 'Soruşturma', 'Analiz'],
   },
   {
@@ -66,7 +70,8 @@ export const GAMES = [
     gradient: 'linear-gradient(135deg, #1A0000 0%, #4A0000 50%, #7A0000 100%)',
     bgPattern: 'alarm',
     emoji: '🚨',
-    path: '/eko-kacis/index.html',
+    image: 'card-eko-kacis.png',
+    path: 'eko-kacis/index.html',
     tags: ['Escape Room', 'Bulmaca', 'Zamanlı'],
   },
   {
@@ -80,7 +85,8 @@ export const GAMES = [
     gradient: 'linear-gradient(135deg, #0A0805 0%, #2D1B00 50%, #4A2800 100%)',
     bgPattern: 'comic',
     emoji: '🎨',
-    path: '/eko-cizgi-roman/index.html',
+    image: 'card-eko-cizgi-roman.png',
+    path: 'eko-cizgi-roman/index.html',
     tags: ['Yaratıcılık', 'Çizgi Roman', 'Tasarım'],
   },
   {
@@ -94,7 +100,8 @@ export const GAMES = [
     gradient: 'linear-gradient(135deg, #020617 0%, #0F172A 50%, #1E293B 100%)',
     bgPattern: 'holo',
     emoji: '💼',
-    path: '/fono-komitesi/index.html',
+    image: 'card-fono-komitesi.png',
+    path: 'fono-komitesi/index.html',
     tags: ['Karar Verme', 'AHP Analiz', 'Yatırım'],
   },
   {
@@ -108,7 +115,8 @@ export const GAMES = [
     gradient: 'linear-gradient(135deg, #0A001A 0%, #1A003A 50%, #2D005A 100%)',
     bgPattern: 'arena',
     emoji: '⚡',
-    path: '/bio-triz-arena/index.html',
+    image: 'card-bio-triz-arena.png',
+    path: 'bio-triz-arena/index.html',
     tags: ['Yarışma', 'Quiz', 'Final'],
   },
 ];

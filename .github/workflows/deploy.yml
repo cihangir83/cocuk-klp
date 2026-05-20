@@ -6,12 +6,19 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -21,8 +28,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+
+      - name: Setup Pages 🔧
+        uses: actions/configure-pages@v5
 
       - name: Build Games 🎮
         run: |
@@ -32,11 +40,19 @@ jobs:
             echo ">>> Building $game..."
             if [ -d "$game" ]; then
               cd "$game"
-              # Install dependencies if lockfile doesn't exist or it's first run
-              npm install --prefer-offline --no-audit
-              # Build with relative base
-              npm run build -- --base ./
-              # Move to ana-sayfa public
+              if [ -f "pnpm-lock.yaml" ]; then
+                echo "Detected pnpm project"
+                npx pnpm install --frozen-lockfile
+                npx pnpm run build
+              elif [ -f "package-lock.json" ]; then
+                echo "Detected npm project with lockfile"
+                npm ci --legacy-peer-deps
+                npm run build
+              else
+                echo "Detected npm project without lockfile"
+                npm install --legacy-peer-deps --no-audit
+                npm run build
+              fi
               mkdir -p ../ana-sayfa/public/$game
               cp -r dist/* ../ana-sayfa/public/$game/
               cd ..
@@ -46,12 +62,15 @@ jobs:
       - name: Build Main Portal 🚀
         run: |
           cd ana-sayfa
-          npm install --prefer-offline --no-audit
+          npm ci --legacy-peer-deps
           npm run build
           cd ..
 
-      - name: Deploy to GitHub Pages 🌎
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload artifact 📤
+        uses: actions/upload-pages-artifact@v3
         with:
-          folder: ana-sayfa/dist
-          branch: gh-pages
+          path: 'ana-sayfa/dist'
+
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
+        uses: actions/deploy-pages@v4

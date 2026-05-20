@@ -6,7 +6,7 @@ const tools = [
     description: "Bir nesneyi bağımsız parçalara ayır. Nesneyi kolayca parçalanabilir hale getir.",
     bioHint: "Yaprak Kesici Karınca — yükü parçalara böler, her parça ayrı taşınır.",
     shape: "screwdriver",
-    initiallyAvailable: true
+    initiallyAvailable: false
   },
   {
     id: "tool_asimetri",
@@ -15,7 +15,7 @@ const tools = [
     description: "Nesnenin simetrik formunu asimetrik yap. Zaten asimetrikse asimetri derecesini arttır.",
     bioHint: "Yengeç pençeleri — biri güçlü kırmak için, diğeri hassas tutmak için.",
     shape: "bent_wrench",
-    initiallyAvailable: true
+    initiallyAvailable: false
   },
   {
     id: "tool_birlestirme",
@@ -24,7 +24,7 @@ const tools = [
     description: "Aynı veya benzer nesneleri/işlemleri birleştir. Paralel operasyonları tek adımda topla.",
     bioHint: "Bal arısı kovanı — binlerce hücre tek bir yapıda birleşir.",
     shape: "clamp",
-    initiallyAvailable: true
+    initiallyAvailable: false
   },
   {
     id: "tool_gozenekli_yapi",
@@ -42,7 +42,7 @@ const tools = [
     description: "Etkileşen nesneleri aynı veya benzer malzemeden yap. Yüzey yapısını malzemeyle uyumlu hale getir.",
     bioHint: "Lotus yaprağı — yüzey yapısı yaprak malzemesinin kendisi, ek kaplama yok.",
     shape: "ruler",
-    initiallyAvailable: true
+    initiallyAvailable: false
   },
   {
     id: "tool_bosaltma",
@@ -51,7 +51,7 @@ const tools = [
     description: "Zararlı faktörleri hızla atla. Eksik kaynağı farklı bir yerden temin et.",
     bioHint: "Namib böceği — suyu havadan toplar, su kaynağına gitmez.",
     shape: "punch",
-    initiallyAvailable: true
+    initiallyAvailable: false
   },
   {
     id: "tool_boyut_degistirme",

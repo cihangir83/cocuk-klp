@@ -13,6 +13,7 @@ import Piston from '../svg/Piston';
 import Manometer from '../svg/Manometer';
 import Lamp from '../svg/Lamp';
 import MetalButton from '../ui/MetalButton';
+import MachineVisuals from '../svg/MachineVisuals';
 
 export default function Workbench() {
   const { state, dispatch, getActiveMachine } = useGame();
@@ -23,6 +24,57 @@ export default function Workbench() {
   const [machineState, setMachineState] = useState('locked'); // locked, nearly, solving, running
   const [showHint, setShowHint] = useState(false);
   const [wrongMessage, setWrongMessage] = useState('');
+
+  const [tutorialStep, setTutorialStep] = useState(
+    (state.tutorialCompleted?.workbench === false && state.solvedMachines.length === 0) ? 1 : 0
+  );
+
+  const nextTutorialStep = () => {
+    if (tutorialStep === 3) {
+      setTutorialStep(0);
+      dispatch({ type: 'COMPLETE_TUTORIAL', tutorialType: 'workbench' });
+    } else {
+      setTutorialStep(prev => prev + 1);
+    }
+  };
+
+  const renderTutorial = () => {
+    if (tutorialStep === 0) return null;
+    
+    return (
+      <>
+        {/* Karanlık Arka Plan Overlay (z-100) */}
+        <div className="absolute inset-0 z-[100] bg-black/80 pointer-events-auto" />
+        
+        {/* Bilgi Kutuları (z-120) */}
+        <div className="absolute inset-0 z-[120] pointer-events-none">
+          {tutorialStep === 1 && (
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="absolute top-10 left-[30%] -translate-x-1/2 max-w-md bg-[var(--color-metal-dark)] border-2 border-[var(--color-lamp-blue)] p-8 rounded-xl shadow-[0_0_50px_rgba(0,150,255,0.4)] pointer-events-auto">
+              <h3 className="text-3xl text-[var(--color-lamp-blue)] font-[var(--font-engraved)] mb-4 text-center">ÇELİŞKİ ANALİZİ 👇</h3>
+              <p className="text-gray-300 font-[var(--font-mechanical)] text-lg mb-6 text-center leading-relaxed">Ortadaki ekranda makinenin problemi yazar. Hangi parçaların uyumsuz olduğunu dikkatlice okumalısın.</p>
+              <button onClick={nextTutorialStep} className="px-6 py-3 bg-[var(--color-lamp-blue)] text-black font-bold rounded w-full hover:bg-blue-400 text-lg transition-transform hover:scale-105">SONRAKİ ▸</button>
+            </motion.div>
+          )}
+          
+          {tutorialStep === 2 && (
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="absolute left-[15%] top-1/2 -translate-y-1/2 max-w-md bg-[var(--color-metal-dark)] border-2 border-[var(--color-lamp-yellow)] p-8 rounded-xl shadow-[0_0_50px_rgba(255,200,0,0.4)] pointer-events-auto">
+              <h3 className="text-3xl text-[var(--color-lamp-yellow)] font-[var(--font-engraved)] mb-4 text-center">TRIZ ALET PANELİ 👉</h3>
+              <p className="text-gray-300 font-[var(--font-mechanical)] text-lg mb-6 text-center leading-relaxed">Sağdaki panelde açık olan aletlerini görüyorsun. Probleme en uygun olan aleti bul ve üzerine basılı tut.</p>
+              <button onClick={nextTutorialStep} className="px-6 py-3 bg-[var(--color-lamp-yellow)] text-black font-bold rounded w-full hover:bg-yellow-400 text-lg transition-transform hover:scale-105">SONRAKİ ▸</button>
+            </motion.div>
+          )}
+
+          {tutorialStep === 3 && (
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="absolute top-[20%] left-[30%] -translate-x-1/2 max-w-md bg-[var(--color-metal-dark)] border-2 border-[var(--color-lamp-green)] p-8 rounded-xl shadow-[0_0_50px_rgba(46,213,115,0.4)] pointer-events-auto">
+              <h3 className="text-3xl text-[var(--color-lamp-green)] font-[var(--font-engraved)] mb-4 text-center">ALET YUVASI 👇</h3>
+              <p className="text-gray-300 font-[var(--font-mechanical)] text-lg mb-6 text-center leading-relaxed">Doğru aleti sağdaki panelden tutup sürükleyerek ortadaki yuvaya bırakırsan makine çalışmaya başlar!</p>
+              <button onClick={nextTutorialStep} className="px-6 py-3 bg-[var(--color-lamp-green)] text-black font-bold rounded w-full hover:bg-green-400 text-lg transition-transform hover:scale-105 shadow-[0_0_15px_rgba(46,213,115,0.8)]">ANLADIM, BAŞLA! 🚀</button>
+            </motion.div>
+          )}
+        </div>
+      </>
+    );
+  };
 
   // Sensörler, tıklama ile sürüklemeyi ayırt etmek için
   const sensors = useSensors(
@@ -51,38 +103,38 @@ export default function Workbench() {
     const { over, active } = event;
     setActiveId(null);
 
-    // Dropzone'un üstüne mi bırakıldı?
+    // Dropzone'un üstüne mi bırakıldı? VEYA genel alan
     if (over && over.id === 'machine-drop-zone') {
       const isCorrect = active.id === machine.correctTool;
 
       if (isCorrect) {
         // Çözüm sekansı
         setMachineState('solving');
-        setWrongMessage('');
-        sound.playClick(); // metal klik
-        setTimeout(() => sound.playGearStart(), 500);
+        setWrongMessage('DOĞRU ALET! BAĞLANTI KURULUYOR...');
+        sound.playClick(); 
         
-        // 2 saniye sonra tamamen çalışır hale getirme
+        setTimeout(() => sound.playGearStart(), 300);
+        
         setTimeout(() => {
           setMachineState('running');
           sound.playSuccess();
-        }, 2000);
+          setWrongMessage('');
+        }, 1000);
 
-        // 4 saniye sonra sonraki ekrana geç
         setTimeout(() => {
-          dispatch({ type: 'TRY_TOOL', toolId: active.id }); // this handles the state update
-        }, 4000);
+          dispatch({ type: 'TRY_TOOL', toolId: active.id });
+        }, 2000);
 
       } else {
         // Yanlış alet
         sound.playMetalHit();
-        setMachineState('nearly'); // "Neredeyse" veya çarpma efekti
-        setWrongMessage('Bu ilke bu çelişkiyi çözmüyor.');
+        setMachineState('nearly');
+        setWrongMessage('Hata! Bu ilke bu çelişkiyi çözmüyor.');
         
         setTimeout(() => {
           setMachineState('locked');
           dispatch({ type: 'TRY_TOOL', toolId: active.id });
-        }, 1000);
+        }, 800);
       }
     }
   };
@@ -122,7 +174,8 @@ export default function Workbench() {
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="w-full h-full flex bg-[#0A0805] text-[var(--color-text-display)]">
+      <div className="w-full h-full flex bg-[#0A0805] text-[var(--color-text-display)] relative">
+        {renderTutorial()}
         
         {/* SOL PANEL: MAKİNE (%60) */}
         <div className="w-3/5 h-full relative border-r-4 border-[var(--color-metal-dark)] overflow-hidden">
@@ -136,37 +189,101 @@ export default function Workbench() {
 
           {/* Ana Makine Mekanizması */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`relative w-[400px] h-[300px] ${machineState === 'nearly' ? 'machine-shake' : ''}`}>
+            <div className={`relative w-[500px] h-[350px]`}>
               
-              {/* Dişliler */}
-              <div className="absolute top-0 transform -translate-x-10">
-                <Gear size={200} color="rust" animationState={getGearAnim()[0]} />
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-[var(--color-metal-dark)] px-3 py-1 border border-[var(--color-rust)] text-[10px] text-[var(--color-rust)] font-[var(--font-mechanical)] text-center whitespace-nowrap">
-                  {machine.contradiction.param1.name.toUpperCase()} <br/> ({machine.contradiction.param1.direction.toUpperCase()})
-                </div>
-              </div>
-              
-              <div className="absolute top-10 right-0 transform translate-x-10">
-                <Gear size={160} color="copper" animationState={getGearAnim()[1]} />
-                <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-[var(--color-metal-dark)] px-3 py-1 border border-[var(--color-copper)] text-[10px] text-[var(--color-copper-bright)] font-[var(--font-mechanical)] text-center whitespace-nowrap">
-                  {machine.contradiction.param2.name.toUpperCase()} <br/> ({machine.contradiction.param2.direction.toUpperCase()})
-                </div>
-              </div>
-
-              {/* Çelişki Görseli (Şimşek/Bağlantı) */}
-              {(machineState === 'locked' || machineState === 'nearly') && (
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-10 flex items-center justify-center conflict-lightning pointer-events-none z-10">
-                  <svg width="100" height="40" viewBox="0 0 100 40">
-                    <path d="M 10 20 L 40 5 L 45 25 L 80 10 L 90 20" fill="none" stroke="#E84545" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-              )}
+              <MachineVisuals 
+                machineId={machine.id} 
+                machineState={machineState} 
+                param1={machine.contradiction.param1} 
+                param2={machine.contradiction.param2} 
+              />
 
               {/* Alet Yuvası (Drop Zone) */}
-              <DropZone activeMachineId={machine.id} isPulsing={machineState === 'locked'} />
+              <div className={`absolute bottom-10 left-1/2 -translate-x-1/2 transition-all ${tutorialStep === 3 ? 'z-[110] scale-125' : 'z-50'}`}>
+                <DropZone activeMachineId={machine.id} isPulsing={machineState === 'locked'} />
+              </div>
 
             </div>
           </div>
+
+          {/* Tutorial / Görev Yönergesi ve Aşamalı İpuçları (Progressive Scaffolding) */}
+          {machineState === 'locked' && (() => {
+            // Unvana göre ipucu gecikmesi (Zorluk ayarı)
+            let bioHintThreshold = 1;
+            let directHintThreshold = 2;
+
+            if (state.inventorTitle === 'Kalfa') {
+              bioHintThreshold = 2;
+              directHintThreshold = 3;
+            } else if (state.inventorTitle === 'Usta') {
+              bioHintThreshold = 3;
+              directHintThreshold = 4;
+            }
+
+            const w = state.wrongAttemptsOnMachine;
+            const showBioHint = w >= bioHintThreshold && w < directHintThreshold;
+            const showDirectHint = w >= directHintThreshold;
+            const isJustWrong = w > 0 && !showBioHint && !showDirectHint;
+
+            return (
+              <div className={`absolute inset-0 z-40 bg-black/60 pointer-events-none flex items-center justify-center ${tutorialStep === 1 ? 'z-[110]' : ''}`}>
+                <div className={`bg-[var(--color-metal-dark)] border-2 border-[var(--color-lamp-blue)] p-6 rounded-lg text-center backdrop-blur-md shadow-[0_0_30px_rgba(103,232,249,0.2)] transform -translate-y-10 w-4/5 max-w-md transition-all ${tutorialStep === 1 ? 'relative z-[110] ring-4 ring-[var(--color-lamp-blue)] scale-[1.05]' : 'animate-pulse'}`}>
+                  <p className="text-[var(--color-lamp-blue)] font-[var(--font-engraved)] text-xl mb-4 tracking-wider">
+                    HEDEF: {machine.name.toUpperCase()}
+                  </p>
+                  
+                  {/* Sabit Problem Tanımı */}
+                  <p className="text-[var(--color-text-display)] font-[var(--font-body)] text-sm mb-4 leading-relaxed">
+                    {machine.contradiction.description}
+                  </p>
+
+                  {/* Yanlış Yapıp Henüz İpucu Almayan (Usta/Kalfa) Durumu */}
+                  {isJustWrong && (
+                    <div className="bg-red-900/20 border border-red-700 p-3 rounded mb-4 shadow-inner text-left animate-pulse">
+                      <p className="text-red-400 text-sm font-bold text-center">
+                        ⚠️ UYUMSUZ PARÇA!
+                      </p>
+                      <p className="text-red-300 text-xs text-center mt-1">
+                        Seçtiğin ilke makineyi bozuyor. Farklı bir mühendislik açısı düşünmelisin.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Aşama 2: Biyoloji İpucu */}
+                  {showBioHint && (
+                    <div className="bg-[#1B5E20]/20 border border-[#2E7D32] p-4 rounded mb-4 shadow-inner text-left">
+                      <p className="text-[#4CAF50] text-sm font-bold mb-2 flex items-center gap-2">
+                        <span className="text-xl">{machine.bioExample.emoji}</span> DOĞADAN İPUCU: {machine.bioExample.creature.toUpperCase()}
+                      </p>
+                      <p className="text-[var(--color-text-display)] font-[var(--font-body)] text-sm leading-relaxed">
+                        {machine.bioExample.detail}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Aşama 3: Doğrudan Yönlendirme */}
+                  {showDirectHint && (
+                    <div className="bg-yellow-900/40 border border-yellow-600 p-4 rounded mb-4 shadow-inner">
+                      <p className="text-yellow-400 text-sm font-bold mb-2 flex items-center justify-center gap-2">
+                        <span>🛠️</span> İLERİ İPUCU (BAĞLANTI KUR):
+                      </p>
+                      <p className="text-yellow-200 text-sm leading-relaxed">
+                        {toolsData.find(t => t.id === machine.correctTool)?.bioHint || "Doğadaki çözümü düşün."}
+                        <br/><br/>
+                        Sağdaki dolapta ismi <strong>"{toolsData.find(t => t.id === machine.correctTool)?.name.substring(0, 4)}..."</strong> ile başlayan aleti bul!
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="border-t border-[var(--color-metal-light)] pt-3 mt-4">
+                    <p className="text-sm text-[var(--color-lamp-yellow)] font-[var(--font-mechanical)]">
+                      👉 Bu çelişkiyi çözmek için sağdaki dolaptan uygun TRIZ aletini yuvaya sürükle.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Manometre & Lambalar */}
           <div className="absolute top-6 right-6 bg-[var(--color-metal-dark)] p-4 rounded-lg border-2 border-[var(--color-metal-mid)] shadow-lg flex flex-col items-center gap-4">
@@ -178,31 +295,20 @@ export default function Workbench() {
             </div>
           </div>
 
-          {/* Yanlış Mesajı ve İpucu UI */}
+          {/* Yanlış/Doğru Mesajı ve İpucu UI */}
           <AnimatePresence>
             {wrongMessage && (
               <motion.div 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="absolute bottom-20 left-1/2 -translate-x-1/2 bg-[#2D0A0A] border border-[var(--color-lamp-red)] text-[var(--color-lamp-red)] px-6 py-2 rounded font-[var(--font-mechanical)] shadow-[0_0_15px_rgba(232,69,69,0.5)] z-50"
+                className={`absolute bottom-24 left-1/2 -translate-x-1/2 px-8 py-3 rounded-lg font-[var(--font-mechanical)] text-xl z-50 shadow-2xl border-2 ${
+                  machineState === 'solving' || machineState === 'running' 
+                    ? 'bg-[#0A2D0A] border-[var(--color-lamp-green)] text-[var(--color-lamp-green)] shadow-[0_0_20px_rgba(46,213,115,0.6)]' 
+                    : 'bg-[#2D0A0A] border-[var(--color-lamp-red)] text-[var(--color-lamp-red)] shadow-[0_0_20px_rgba(232,69,69,0.6)]'
+                }`}
               >
                 {wrongMessage}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {showHint && machineState === 'locked' && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="absolute top-6 left-6 max-w-sm bg-black/60 border border-[var(--color-lamp-yellow)]/50 p-4 rounded-lg"
-              >
-                <div className="text-[var(--color-lamp-yellow)] text-xs font-[var(--font-mechanical)] mb-1">SİSTEM ÖNERİSİ:</div>
-                <div className="text-sm font-[var(--font-body)] italic text-[var(--color-text-muted)]">
-                  "Doğada bu çelişkiyi çözen bir canlı düşün: <strong className="text-[var(--color-text-display)]">Yoksa bir hayvanın özelliği mi gerekiyor?</strong>"
-                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -215,7 +321,7 @@ export default function Workbench() {
         </div>
 
         {/* SAĞ PANEL: TRIZ ALETLERİ (%40) */}
-        <div className="w-2/5 h-full bg-[#1A120B] p-6 flex flex-col relative shadow-[inset_10px_0_20px_rgba(0,0,0,0.6)]">
+        <div className={`w-2/5 h-full bg-[#1A120B] p-6 flex flex-col relative shadow-[inset_10px_0_20px_rgba(0,0,0,0.6)] transition-all ${tutorialStep === 2 ? 'z-[110] ring-4 ring-[var(--color-lamp-yellow)]' : 'z-10'}`}>
           <div className="border-b-2 border-[var(--color-metal-light)] pb-2 mb-6">
             <h2 className="font-[var(--font-engraved)] text-2xl text-[var(--color-brass)] text-center">TRIZ ALET PANELI</h2>
             <p className="text-center text-[10px] text-[var(--color-text-muted)] font-[var(--font-mechanical)] mt-1">
