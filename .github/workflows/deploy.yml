@@ -6,12 +6,19 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -24,6 +31,9 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
+      - name: Setup Pages 🔧
+        uses: actions/configure-pages@v5
+
       - name: Build Games 🎮
         run: |
           mkdir -p ana-sayfa/public
@@ -32,11 +42,8 @@ jobs:
             echo ">>> Building $game..."
             if [ -d "$game" ]; then
               cd "$game"
-              # Use legacy-peer-deps to ignore version conflicts (e.g. React 18 vs 19)
               npm install --legacy-peer-deps --no-audit
-              # Build (base path is already in most package.json scripts)
               npm run build
-              # Move to ana-sayfa public
               mkdir -p ../ana-sayfa/public/$game
               cp -r dist/* ../ana-sayfa/public/$game/
               cd ..
@@ -50,8 +57,11 @@ jobs:
           npm run build
           cd ..
 
-      - name: Deploy to GitHub Pages 🌎
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload artifact 📤
+        uses: actions/upload-pages-artifact@v3
         with:
-          folder: ana-sayfa/dist
-          branch: gh-pages
+          path: 'ana-sayfa/dist'
+
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
+        uses: actions/deploy-pages@v4
