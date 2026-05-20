@@ -28,8 +28,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
 
       - name: Setup Pages 🔧
         uses: actions/configure-pages@v5
@@ -42,8 +40,19 @@ jobs:
             echo ">>> Building $game..."
             if [ -d "$game" ]; then
               cd "$game"
-              npm install --legacy-peer-deps --no-audit
-              npm run build
+              if [ -f "pnpm-lock.yaml" ]; then
+                echo "Detected pnpm project"
+                npx pnpm install --frozen-lockfile
+                npx pnpm run build
+              elif [ -f "package-lock.json" ]; then
+                echo "Detected npm project with lockfile"
+                npm ci --legacy-peer-deps
+                npm run build
+              else
+                echo "Detected npm project without lockfile"
+                npm install --legacy-peer-deps --no-audit
+                npm run build
+              fi
               mkdir -p ../ana-sayfa/public/$game
               cp -r dist/* ../ana-sayfa/public/$game/
               cd ..
@@ -53,7 +62,7 @@ jobs:
       - name: Build Main Portal 🚀
         run: |
           cd ana-sayfa
-          npm install --legacy-peer-deps --no-audit
+          npm ci --legacy-peer-deps
           npm run build
           cd ..
 
@@ -65,4 +74,3 @@ jobs:
       - name: Deploy to GitHub Pages 🚀
         id: deployment
         uses: actions/deploy-pages@v4
-# trigger build
