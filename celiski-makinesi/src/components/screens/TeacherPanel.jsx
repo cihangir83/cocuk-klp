@@ -118,6 +118,10 @@ export default function TeacherPanel() {
       <div className="flex gap-4">
         <MetalButton type="brass" onClick={handleExport}>VERİLERİ DIŞA AKTAR (JSON)</MetalButton>
         <MetalButton type="copper" onClick={handleReset}>SİSTEMİ SIFIRLA</MetalButton>
+        <MetalButton type="dark" onClick={() => {
+          dispatch({ type: 'DEV_FINISH_GAME' });
+          alert("GELİŞTİRİCİ HİLESİ: Oyun başarıyla bitirildi!");
+        }}>DEV: OYUNU BİTİR</MetalButton>
       </div>
 
     </div>

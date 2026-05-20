@@ -44,7 +44,13 @@ const initialState = {
   // Öğretmen/Genel ayarlar
   soundEnabled: true,
   timerEnabled: false,
-  timerDuration: 20 // dakika
+  timerDuration: 20, // dakika
+
+  // Eğitim/Tutorial Durumu
+  tutorialCompleted: {
+    workshop: false,
+    workbench: false
+  }
 };
 
 function checkBadges(state) {
@@ -92,6 +98,7 @@ function saveState(state) {
       totalWrongAttempts: state.totalWrongAttempts,
       earnedBadges: state.earnedBadges,
       soundEnabled: state.soundEnabled,
+      tutorialCompleted: state.tutorialCompleted || { workshop: false, workbench: false },
       isFirstSession: false
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
@@ -202,8 +209,28 @@ function gameReducer(state, action) {
         activeMachineId: null
       };
 
+    case 'COMPLETE_TUTORIAL':
+      return {
+        ...state,
+        tutorialCompleted: {
+          ...state.tutorialCompleted,
+          [action.tutorialType]: true
+        }
+      };
+
     case 'TOGGLE_SOUND':
       return { ...state, soundEnabled: !state.soundEnabled };
+
+    case 'DEV_FINISH_GAME':
+      return {
+        ...state,
+        solvedMachines: machines.map(m => m.id),
+        availableTools: tools.map(t => t.id),
+        discoveredBioExamples: machines.map(m => m.id),
+        inventorLevel: 5,
+        currentScreen: 'workshop',
+        activeMachineId: null
+      };
 
     case 'RESET_ALL':
       localStorage.removeItem(STORAGE_KEY);
